@@ -8,7 +8,8 @@ const Register = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    role: "admin"
   });
 
   const submit = async (e) => {
@@ -59,6 +60,18 @@ const Register = () => {
               setForm({ ...form, password: e.target.value })
             }
           />
+
+          <select
+            value={form.role}
+            required
+            onChange={(e) =>
+              setForm({ ...form, role: e.target.value })
+            }
+            style={{ width: "100%", padding: "12px", marginBottom: "15px", borderRadius: "6px", border: "1px solid #ddd" }}
+          >
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+          </select>
 
           <button type="submit">Register</button>
 
