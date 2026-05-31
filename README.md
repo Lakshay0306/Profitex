@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Profitex - Client
+
+This project is the frontend for Profitex.
+
+**Live Demo:** [https://profitex-liart.vercel.app](https://profitex-liart.vercel.app)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
