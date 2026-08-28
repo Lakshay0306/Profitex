@@ -63,6 +63,35 @@ const Expenses = () => {
     }
   };
 
+  const [isScanning, setIsScanning] = useState(false);
+
+  const handleScanReceipt = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsScanning(true);
+    const formData = new FormData();
+    formData.append("receipt", file);
+
+    try {
+      const { data } = await API.post("/ai/scan-receipt", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+      setForm({
+        title: data.description || data.vendorName || "Scanned Expense",
+        amount: data.amount || "",
+        category: "Other" // default for scanned
+      });
+      alert("Receipt scanned successfully! Please review the details before saving.");
+    } catch (err) {
+      console.log(err);
+      alert("Failed to scan receipt. " + (err.response?.data?.message || ""));
+    } finally {
+      setIsScanning(false);
+      e.target.value = null; // reset file input
+    }
+  };
+
   return (
     <Layout>
       <div className="page-title">Expenses</div>
@@ -96,7 +125,31 @@ const Expenses = () => {
       </div>
 
       <div className="invoice-card">
-        <h3>{isEditing ? "Edit Expense" : "Add New Expense"}</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3>{isEditing ? "Edit Expense" : "Add New Expense"}</h3>
+          
+          <label style={{ 
+            cursor: 'pointer', 
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
+            color: 'white', 
+            padding: '8px 16px', 
+            borderRadius: '20px',
+            fontSize: '14px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            {isScanning ? "⏳ Scanning..." : "📸 Auto-Fill from Receipt"}
+            <input 
+              type="file" 
+              accept="image/*" 
+              style={{ display: 'none' }} 
+              onChange={handleScanReceipt} 
+              disabled={isScanning}
+            />
+          </label>
+        </div>
+
         <form onSubmit={submit} style={{ display: "flex", gap: "10px", marginTop: "15px", flexWrap: "wrap" }}>
           <input
             placeholder="Expense Title"

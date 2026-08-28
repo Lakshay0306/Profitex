@@ -30,6 +30,9 @@ const Dashboard = () => {
     trends: []
   });
 
+  const [aiInsights, setAiInsights] = useState("");
+  const [loadingAi, setLoadingAi] = useState(false);
+
   useEffect(() => {
     const fetchSummary = async () => {
       try {
@@ -40,7 +43,21 @@ const Dashboard = () => {
       }
     };
 
+    const fetchAiInsights = async () => {
+      setLoadingAi(true);
+      try {
+        const { data } = await API.get("/dashboard/insights");
+        setAiInsights(data.insights);
+      } catch (err) {
+        console.log(err);
+        setAiInsights("Failed to load AI insights.");
+      } finally {
+        setLoadingAi(false);
+      }
+    };
+
     fetchSummary();
+    fetchAiInsights();
   }, []);
 
   const barData = {
@@ -91,6 +108,20 @@ const Dashboard = () => {
     <Layout>
 
       <h2 className="dashboard-title">Business Dashboard</h2>
+
+      {/* AI Insights Card */}
+      <div className="card" style={{ marginBottom: '25px', background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)', border: '1px solid #bbf7d0', padding: '20px' }}>
+        <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#166534', marginTop: 0 }}>
+          <span>✨</span> AI Business Insights
+        </h3>
+        {loadingAi ? (
+          <p style={{ color: '#15803d', margin: 0 }}>Generating insights based on your data...</p>
+        ) : (
+          <div style={{ color: '#166534', whiteSpace: 'pre-line', lineHeight: '1.6' }}>
+            {aiInsights || "No insights available."}
+          </div>
+        )}
+      </div>
 
       {/* KPI Cards */}
       <div className="dashboard-cards">

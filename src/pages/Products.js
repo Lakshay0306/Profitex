@@ -19,12 +19,27 @@ const Products = () => {
     supplier: ""
   });
 
+  const [aiDemand, setAiDemand] = useState(null);
+  const [loadingAi, setLoadingAi] = useState(false);
+
   const fetchProducts = async () => {
     try {
       const { data } = await API.get("/products");
       setProducts(data);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const fetchDemand = async () => {
+    setLoadingAi(true);
+    try {
+      const { data } = await API.get("/ai/predict-demand");
+      setAiDemand(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingAi(false);
     }
   };
 
@@ -112,6 +127,32 @@ const Products = () => {
           ⚠️ Alert: {lowStockCount} products are low on stock (Quantity &lt; 5).
         </div>
       )}
+
+      {/* AI DEMAND PREDICTION ALERT */}
+      <div className="invoice-card" style={{ marginBottom: "20px", background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)', border: '1px solid #bbf7d0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3 style={{ margin: 0, color: '#166534', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>📈</span> AI Demand Prediction
+          </h3>
+          <button onClick={fetchDemand} className="btn-primary" style={{ background: '#166534', padding: '6px 12px', fontSize: '13px' }}>
+            {loadingAi ? "Analyzing..." : "Run AI Analysis"}
+          </button>
+        </div>
+        
+        {aiDemand && aiDemand.length > 0 && (
+          <div style={{ marginTop: "15px", display: "flex", gap: "15px", flexWrap: "wrap" }}>
+            {aiDemand.map((item, i) => (
+              <div key={i} style={{ background: "white", padding: "10px 15px", borderRadius: "8px", border: "1px solid #bbf7d0", flex: 1, minWidth: "200px" }}>
+                <strong>{item.productName}</strong>
+                <p style={{ margin: "5px 0", fontSize: "13px", color: "#475569" }}>{item.reason}</p>
+                <div style={{ fontSize: "13px", color: "#166534", fontWeight: "600" }}>
+                  Suggested Reorder: {item.recommendedOrder} units
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* ADD/EDIT PRODUCT FORM */}
 

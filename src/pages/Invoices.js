@@ -10,6 +10,26 @@ const Invoices = () => {
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [invoices, setInvoices] = useState([]);
+  const [draftingId, setDraftingId] = useState(null);
+  const [emailDraft, setEmailDraft] = useState(null);
+
+  const draftEmail = async (invoice) => {
+    setDraftingId(invoice._id);
+    try {
+      const { data } = await API.post("/ai/draft-email", {
+        clientName: invoice.customerName,
+        invoiceNumber: invoice.invoiceNumber,
+        grandTotal: invoice.grandTotal,
+        date: invoice.createdAt
+      });
+      setEmailDraft(data);
+    } catch (err) {
+      console.log(err);
+      alert(err.response?.data?.message || "Failed to draft email.");
+    } finally {
+      setDraftingId(null);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -228,19 +248,48 @@ const Invoices = () => {
                 <td>{new Date(i.createdAt).toLocaleDateString()}</td>
                 <td style={{ fontWeight: "600" }}>₹ {i.grandTotal.toFixed(2)}</td>
                 <td>
-                  <button
-                    className="btn-secondary"
-                    style={{ padding: "4px 10px", fontSize: "13px" }}
-                    onClick={() => downloadPDF(i._id, i.invoiceNumber)}
-                  >
-                    Download PDF
-                  </button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      className="btn-secondary"
+                      style={{ padding: "4px 10px", fontSize: "13px" }}
+                      onClick={() => downloadPDF(i._id, i.invoiceNumber)}
+                    >
+                      PDF
+                    </button>
+                    <button
+                      className="btn-primary"
+                      style={{ padding: "4px 10px", fontSize: "13px", background: '#4f46e5' }}
+                      onClick={() => draftEmail(i)}
+                      disabled={draftingId === i._id}
+                    >
+                      {draftingId === i._id ? "..." : "✉️ AI Email"}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {emailDraft && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: 'white', padding: '25px', borderRadius: '12px', width: '500px', maxWidth: '90%' }}>
+            <h3 style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>✨ AI Email Draft</h3>
+            <div style={{ marginBottom: '15px' }}>
+              <strong>Subject:</strong> {emailDraft.subject}
+            </div>
+            <textarea
+              readOnly
+              value={emailDraft.body}
+              style={{ width: '100%', height: '200px', padding: '10px', borderRadius: '8px', border: '1px solid #ccc', resize: 'none' }}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '15px' }}>
+              <button className="btn-secondary" onClick={() => setEmailDraft(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </Layout>
   );
