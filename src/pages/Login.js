@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api";
 import { AuthContext } from "../context/AuthContext";
-import "../index.css"; // make sure global css imported
+import "../auth.css"; // Original auth styles
 
 const Login = () => {
 
@@ -30,8 +30,8 @@ const Login = () => {
     <div className="auth-wrapper">
 
       <div className="auth-left">
-        <h1>Profitex</h1>
-        <p>Smart Billing & Inventory Management System</p>
+        <h1>NexaVentory</h1>
+        <p>AI-Powered Smart Billing & Inventory Management System</p>
       </div>
 
       <div className="auth-right">

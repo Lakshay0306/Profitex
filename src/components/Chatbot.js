@@ -5,7 +5,7 @@ import './Chatbot.css';
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hi! I'm your Profitex AI Assistant. Ask me anything about your business!", sender: 'ai' }
+    { text: "Hi! I'm your NexaVentory AI Assistant. Ask me anything about your business!", sender: 'ai' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);

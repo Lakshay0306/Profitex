@@ -1,10 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import Sidebar from "./Sidebar";
 import Chatbot from "./Chatbot";
+import CommandPalette from "./CommandPalette";
 
 const Layout = ({ children }) => {
-  const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
 
@@ -14,47 +15,32 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <div className="layout-container">
-      {/* ================= SIDEBAR ================= */}
-      <div className="sidebar">
-        <h2 className="logo">Profitex</h2>
-        <Link to="/dashboard" className={location.pathname === "/dashboard" ? "active-link" : ""}>Dashboard</Link>
-        <Link to="/products" className={location.pathname === "/products" ? "active-link" : ""}>Products</Link>
-        <Link to="/invoices" className={location.pathname === "/invoices" ? "active-link" : ""}>Invoices</Link>
-        <Link to="/purchases" className={location.pathname === "/purchases" ? "active-link" : ""}>Purchases</Link>
-        <Link to="/expenses" className={location.pathname === "/expenses" ? "active-link" : ""}>Expenses</Link>
-        <Link to="/settings" className={location.pathname === "/settings" ? "active-link" : ""}>Settings</Link>
-      </div>
-
-      {/* ================= MAIN CONTENT ================= */}
-      <div className="main-content">
-        {/* ===== TOPBAR ===== */}
-        <div className="topbar">
+    <div className="layout">
+      <Sidebar />
+      <div className="main-section">
+        <div className="navbar">
           <input
-            className="search-input"
-            placeholder="Search products, invoices..."
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                alert(`Search for: ${e.target.value}`);
-              }
+            className="search"
+            placeholder="Search... (Press Cmd+K)"
+            onClick={() => {
+              document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'metaKey': true}));
             }}
+            readOnly
           />
-          <div className="topbar-right">
-            <span className="welcome-text">Welcome, {user?.name || "User"}</span>
-            <button className="logout-btn" onClick={handleLogout}>Logout</button>
+          <div className="profile-section">
+            <span>{user?.name || "Admin"}</span>
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
-
-        {/* ===== PAGE CONTENT ===== */}
-        <div className="page-content">
+        <div className="content">
           {children}
         </div>
       </div>
 
       <Chatbot />
+      <CommandPalette />
     </div>
   );
 };
 
 export default Layout;
-    

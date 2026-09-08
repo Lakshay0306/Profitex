@@ -21,6 +21,8 @@ const Products = () => {
 
   const [aiDemand, setAiDemand] = useState(null);
   const [loadingAi, setLoadingAi] = useState(false);
+  const [aiPricing, setAiPricing] = useState(null);
+  const [loadingPricing, setLoadingPricing] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -40,6 +42,18 @@ const Products = () => {
       console.log(err);
     } finally {
       setLoadingAi(false);
+    }
+  };
+
+  const fetchPricing = async () => {
+    setLoadingPricing(true);
+    try {
+      const { data } = await API.get("/ai/optimize-pricing");
+      setAiPricing(data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoadingPricing(false);
     }
   };
 
@@ -147,6 +161,32 @@ const Products = () => {
                 <p style={{ margin: "5px 0", fontSize: "13px", color: "#475569" }}>{item.reason}</p>
                 <div style={{ fontSize: "13px", color: "#166534", fontWeight: "600" }}>
                   Suggested Reorder: {item.recommendedOrder} units
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* AI PRICING OPTIMIZATION */}
+      <div className="invoice-card" style={{ marginBottom: "20px", background: 'linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%)', border: '1px solid #f5d0fe' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3 style={{ margin: 0, color: '#86198f', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>💰</span> AI Pricing Optimization
+          </h3>
+          <button onClick={fetchPricing} className="btn-primary" style={{ background: '#86198f', padding: '6px 12px', fontSize: '13px' }}>
+            {loadingPricing ? "Analyzing..." : "Optimize Prices"}
+          </button>
+        </div>
+        
+        {aiPricing && aiPricing.length > 0 && (
+          <div style={{ marginTop: "15px", display: "flex", gap: "15px", flexWrap: "wrap" }}>
+            {aiPricing.map((item, i) => (
+              <div key={i} style={{ background: "white", padding: "10px 15px", borderRadius: "8px", border: "1px solid #f5d0fe", flex: 1, minWidth: "200px" }}>
+                <strong>{item.productName}</strong>
+                <p style={{ margin: "5px 0", fontSize: "13px", color: "#475569" }}>{item.reason}</p>
+                <div style={{ fontSize: "13px", color: "#86198f", fontWeight: "600" }}>
+                  Current Price: ₹{item.currentPrice} → Suggested: ₹{item.recommendedPrice}
                 </div>
               </div>
             ))}

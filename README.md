@@ -1,8 +1,8 @@
-# Profitex - Client
+# NexaVentory - Client
 
-This project is the frontend for Profitex.
+This project is the frontend for NexaVentory.
 
-**Live Demo:** [https://profitex-liart.vercel.app](https://profitex-liart.vercel.app)
+**Live Demo:** [https://nexaventory-liart.vercel.app](https://nexaventory-liart.vercel.app)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -293,3 +293,49 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
+/* Command Palette Overlay */
+.cmd-palette-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15vh;
+  z-index: 9999;
+}
+.cmd-palette {
+  width: 650px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.cmd-palette input {
+  width: 100%;
+  padding: 20px 24px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  color: #374151;
+}
+.cmd-palette .cmd-options {
+  max-height: 350px;
+  overflow-y: auto;
+  border-top: 1px solid #f3f4f6;
+}
+.cmd-palette .cmd-option {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+  color: #4b5563;
+  font-size: 15px;
+  transition: background 0.2s;
+}
+.cmd-palette .cmd-option:hover, .cmd-palette .cmd-option.selected {
+  background: #f3f4f6;
+  color: #2563eb;
+}

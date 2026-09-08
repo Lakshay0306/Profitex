@@ -26,8 +26,8 @@ const Register = () => {
   return (
     <div className="auth-wrapper">
       <div className="auth-left">
-        <h1>Profitex</h1>
-        <p>Create your business account and manage everything smartly.</p>
+        <h1>NexaVentory</h1>
+        <p>AI-Powered Smart Billing & Inventory Management System</p>
       </div>
 
       <div className="auth-right">

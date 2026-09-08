@@ -5,7 +5,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
-      <h2 className="logo">Profitex</h2>
+      <h2 className="logo">NexaVentory</h2>
 
       <nav>
         <Link className={location.pathname === "/dashboard" ? "active" : ""} to="/dashboard">
