@@ -201,50 +201,45 @@ const Products = () => {
         <h3>{isEditing ? "Edit Product" : "Add Product"}</h3>
 
         <form onSubmit={submit}>
-
-          <input
-            placeholder="Product Name"
-            value={form.name}
-            required
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-
-          <input
-            placeholder="Category"
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-          />
-
-          <input
-            type="number"
-            placeholder="Quantity"
-            value={form.quantity}
-            required
-            onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-          />
-
-          <input
-            type="number"
-            placeholder="Price"
-            value={form.price}
-            required
-            onChange={(e) => setForm({ ...form, price: e.target.value })}
-          />
-
-          <input
-            type="number"
-            placeholder="GST %"
-            value={form.gst}
-            onChange={(e) => setForm({ ...form, gst: e.target.value })}
-          />
-
-          <input
-            placeholder="Supplier"
-            value={form.supplier}
-            onChange={(e) => setForm({ ...form, supplier: e.target.value })}
-          />
-
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="form-grid">
+            <input
+              placeholder="Product Name"
+              value={form.name}
+              required
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+            <input
+              placeholder="Category"
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="Quantity"
+              value={form.quantity}
+              required
+              onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              value={form.price}
+              required
+              onChange={(e) => setForm({ ...form, price: e.target.value })}
+            />
+            <input
+              type="number"
+              placeholder="GST %"
+              value={form.gst}
+              onChange={(e) => setForm({ ...form, gst: e.target.value })}
+            />
+            <input
+              placeholder="Supplier"
+              value={form.supplier}
+              onChange={(e) => setForm({ ...form, supplier: e.target.value })}
+            />
+          </div>
+          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
             <button className="btn-primary">{isEditing ? "Update Product" : "Add Product"}</button>
             {isEditing && (
               <button

@@ -30,8 +30,15 @@ const CommandPalette = () => {
       }
     };
 
+    const handleCustomOpen = () => setIsOpen(true);
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('open-cmd-palette', handleCustomOpen);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('open-cmd-palette', handleCustomOpen);
+    };
   }, []);
 
   const filteredCommands = commands.filter(cmd => 

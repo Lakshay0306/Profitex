@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
             className="search"
             placeholder="Search... (Press Cmd+K)"
             onClick={() => {
-              document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'k', 'metaKey': true}));
+              window.dispatchEvent(new CustomEvent('open-cmd-palette'));
             }}
             readOnly
           />

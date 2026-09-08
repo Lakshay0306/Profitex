@@ -142,26 +142,23 @@ const Invoices = () => {
       <h2>Create Invoice</h2>
 
       <div className="invoice-card">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "10px", marginBottom: "20px" }}>
+        <div className="form-grid">
           <input
             placeholder="Customer Name"
             value={customerName}
             required
             onChange={(e) => setCustomerName(e.target.value)}
-            style={{ width: "100%" }}
           />
           <input
             placeholder="Phone Number"
             value={customerPhone}
             onChange={(e) => setCustomerPhone(e.target.value)}
-            style={{ width: "100%" }}
           />
           <input
             placeholder="Email Address"
             type="email"
             value={customerEmail}
             onChange={(e) => setCustomerEmail(e.target.value)}
-            style={{ width: "100%" }}
           />
         </div>
 
