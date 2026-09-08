@@ -92,35 +92,43 @@ const Settings = () => {
         
         {/* BUSINESS INFO */}
         <div className="invoice-card">
-          <h3>Business Details</h3>
-          <form onSubmit={submitCompany} style={{ marginTop: "15px" }}>
-            <label style={{ fontSize: "12px", color: "#64748b" }}>Company Name</label>
-            <input
-              placeholder="Company Name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
+          <h3 style={{ marginBottom: "15px" }}>Business Details</h3>
+          <form onSubmit={submitCompany}>
+            <div className="form-group">
+              <label>Company Name</label>
+              <input
+                placeholder="Company Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </div>
 
-            <label style={{ fontSize: "12px", color: "#64748b" }}>GST Number</label>
-            <input
-              placeholder="GST Number"
-              value={form.gstNumber}
-              onChange={(e) => setForm({ ...form, gstNumber: e.target.value })}
-            />
+            <div className="form-group">
+              <label>GST Number</label>
+              <input
+                placeholder="GST Number"
+                value={form.gstNumber}
+                onChange={(e) => setForm({ ...form, gstNumber: e.target.value })}
+              />
+            </div>
 
-            <label style={{ fontSize: "12px", color: "#64748b" }}>Business Address</label>
-            <input
-              placeholder="Address"
-              value={form.address}
-              onChange={(e) => setForm({ ...form, address: e.target.value })}
-            />
+            <div className="form-group">
+              <label>Business Address</label>
+              <input
+                placeholder="Address"
+                value={form.address}
+                onChange={(e) => setForm({ ...form, address: e.target.value })}
+              />
+            </div>
 
-            <label style={{ fontSize: "12px", color: "#64748b" }}>Business Logo</label>
-            <input
-              type="file"
-              onChange={(e) => setLogo(e.target.files[0])}
-              style={{ border: "none", padding: "5px 0" }}
-            />
+            <div className="form-group">
+              <label>Business Logo</label>
+              <input
+                type="file"
+                onChange={(e) => setLogo(e.target.files[0])}
+                style={{ padding: "8px 12px", background: "#f8fafc" }}
+              />
+            </div>
 
             <button className="btn-primary" style={{ width: "100%", marginTop: "10px" }}>Save Business Info</button>
           </form>
@@ -130,48 +138,59 @@ const Settings = () => {
         <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
           
           <div className="invoice-card">
-            <h3>User Profile</h3>
-            <div style={{ margin: "10px 0", padding: "10px", background: "#f8fafc", borderRadius: "8px" }}>
-              <div style={{ fontSize: "14px" }}><strong>Email:</strong> {user?.email}</div>
-              <div style={{ fontSize: "14px", marginTop: "5px" }}><strong>Role:</strong> <span style={{ textTransform: "capitalize", color: "#2563eb", fontWeight: "600" }}>{user?.role}</span></div>
+            <h3 style={{ marginBottom: "15px" }}>User Profile</h3>
+            <div style={{ marginBottom: "20px", padding: "15px", background: "#f8fafc", borderRadius: "8px" }}>
+              <div style={{ fontSize: "14px", marginBottom: "8px" }}><strong>Email:</strong> {user?.email}</div>
+              <div style={{ fontSize: "14px" }}><strong>Role:</strong> <span style={{ textTransform: "capitalize", color: "#2563eb", fontWeight: "600" }}>{user?.role}</span></div>
             </div>
             
-            <form onSubmit={submitProfile} style={{ marginTop: "15px" }}>
-              <label style={{ fontSize: "12px", color: "#64748b" }}>Full Name</label>
-              <input
-                placeholder="Your Name"
-                value={profileForm.name}
-                onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-              />
-              <button className="btn-primary" style={{ width: "100%" }}>Update Profile</button>
+            <form onSubmit={submitProfile}>
+              <div className="form-group">
+                <label>Full Name</label>
+                <input
+                  placeholder="Your Name"
+                  value={profileForm.name}
+                  onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
+                />
+              </div>
+              <button className="btn-primary" style={{ width: "100%", marginTop: "5px" }}>Update Profile</button>
             </form>
           </div>
 
           <div className="invoice-card">
-            <h3>Update Password</h3>
-            <form onSubmit={submitPassword} style={{ marginTop: "15px" }}>
-              <input
-                type="password"
-                placeholder="Current Password"
-                required
-                value={passwordForm.currentPassword}
-                onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-              />
-              <input
-                type="password"
-                placeholder="New Password"
-                required
-                value={passwordForm.newPassword}
-                onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-              />
-              <input
-                type="password"
-                placeholder="Confirm New Password"
-                required
-                value={passwordForm.confirmPassword}
-                onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-              />
-              <button className="btn-primary" style={{ width: "100%" }}>Update Password</button>
+            <h3 style={{ marginBottom: "15px" }}>Update Password</h3>
+            <form onSubmit={submitPassword}>
+              <div className="form-group">
+                <label>Current Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter Current Password"
+                  required
+                  value={passwordForm.currentPassword}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  placeholder="Enter New Password"
+                  required
+                  value={passwordForm.newPassword}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Confirm New Password</label>
+                <input
+                  type="password"
+                  placeholder="Confirm New Password"
+                  required
+                  value={passwordForm.confirmPassword}
+                  onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                />
+              </div>
+              <button className="btn-primary" style={{ width: "100%", marginTop: "5px" }}>Update Password</button>
             </form>
           </div>
 
