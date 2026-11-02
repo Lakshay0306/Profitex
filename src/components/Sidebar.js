@@ -9,7 +9,8 @@ import {
   Settings,
   Sparkles,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Activity
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -76,6 +77,22 @@ const Sidebar = () => {
             );
           })}
         </nav>
+      </div>
+
+      {/* Quick System Status Widget */}
+      <div className="sidebar-stats-widget">
+        <div className="widget-header">
+          <Activity size={13} style={{ color: "#2563eb" }} />
+          <span>System Status</span>
+        </div>
+        <div className="widget-row">
+          <span>Engine:</span>
+          <span className="widget-val-green">Gemini AI Active</span>
+        </div>
+        <div className="widget-row">
+          <span>Database:</span>
+          <span className="widget-val-blue">MongoDB Synced</span>
+        </div>
       </div>
 
       {/* AI Assistant Promo Pill */}

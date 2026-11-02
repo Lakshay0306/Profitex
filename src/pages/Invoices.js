@@ -14,7 +14,8 @@ import {
   CreditCard,
   User,
   Phone,
-  AtSign
+  AtSign,
+  PackageCheck
 } from "lucide-react";
 
 const Invoices = () => {
@@ -163,10 +164,10 @@ const Invoices = () => {
       <div className="modern-content-card">
         <div className="card-top-bar">
           <div className="card-title-group">
-            <Receipt size={18} className="card-header-icon" />
+            <Receipt size={20} className="card-header-icon" />
             <h3 className="card-headline">Create New Tax Invoice</h3>
           </div>
-          <span className="badge badge-success">GST Ready</span>
+          <span className="badge badge-success">● GST 100% Compliant</span>
         </div>
 
         {/* Customer Information Row */}
@@ -174,8 +175,9 @@ const Invoices = () => {
           <div className="form-field-group">
             <label>Customer / Business Name *</label>
             <div className="input-with-icon">
-              <User size={15} className="input-prefix-icon" />
+              <User size={16} className="input-prefix-icon" />
               <input
+                className="modern-input"
                 placeholder="e.g. Acme Enterprises, Rajesh Kumar"
                 value={customerName}
                 required
@@ -185,10 +187,11 @@ const Invoices = () => {
           </div>
 
           <div className="form-field-group">
-            <label>Contact Phone</label>
+            <label>Contact Phone Number</label>
             <div className="input-with-icon">
-              <Phone size={15} className="input-prefix-icon" />
+              <Phone size={16} className="input-prefix-icon" />
               <input
+                className="modern-input"
                 placeholder="e.g. +91 98765 43210"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
@@ -199,8 +202,9 @@ const Invoices = () => {
           <div className="form-field-group">
             <label>Email Address (for AI Dispatch)</label>
             <div className="input-with-icon">
-              <AtSign size={15} className="input-prefix-icon" />
+              <AtSign size={16} className="input-prefix-icon" />
               <input
+                className="modern-input"
                 placeholder="e.g. client@example.com"
                 type="email"
                 value={customerEmail}
@@ -214,7 +218,7 @@ const Invoices = () => {
         <div className="invoice-items-section">
           <div className="items-section-header">
             <h4>Invoice Line Items ({items.length})</h4>
-            <button type="button" className="btn-modern-ghost" onClick={addItem}>
+            <button type="button" className="btn-add-item-header" onClick={addItem}>
               <Plus size={15} />
               <span>Add Item</span>
             </button>
@@ -277,8 +281,15 @@ const Invoices = () => {
 
           {items.length === 0 && (
             <div className="empty-line-items" onClick={addItem}>
-              <Plus size={24} />
-              <p>No products added to this invoice yet. Click here to add an item.</p>
+              <div className="empty-items-icon-wrap">
+                <Plus size={22} />
+              </div>
+              <div className="empty-items-text-wrap">
+                <span className="empty-items-title">No products in this invoice yet</span>
+                <span className="empty-items-desc">
+                  Click here or press <strong>+ Add Item</strong> to select items from your catalog with automated tax and live inventory deduction.
+                </span>
+              </div>
             </div>
           )}
 
@@ -287,7 +298,7 @@ const Invoices = () => {
             <div className="invoice-summary-bar">
               <div className="summary-left-info">
                 <CreditCard size={18} />
-                <span>Inventory quantities will be deducted automatically upon invoice creation.</span>
+                <span>Inventory stock counts will deduct automatically upon invoice finalization.</span>
               </div>
               <div className="summary-right-totals">
                 <div className="grand-total-display">
@@ -301,7 +312,7 @@ const Invoices = () => {
                   disabled={creatingInvoice}
                 >
                   <CheckCircle2 size={16} />
-                  <span>{creatingInvoice ? "Saving & Deducting Stock..." : "Generate & Finalize Invoice"}</span>
+                  <span>{creatingInvoice ? "Saving & Deducting Stock..." : "Finalize & Save Invoice"}</span>
                 </button>
               </div>
             </div>
@@ -313,9 +324,10 @@ const Invoices = () => {
       <div className="modern-content-card" style={{ marginTop: 24 }}>
         <div className="card-top-bar">
           <div className="card-title-group">
-            <FileText size={18} className="card-header-icon" />
+            <FileText size={20} className="card-header-icon" />
             <h3 className="card-headline">Recent Billing Invoices ({invoices.length})</h3>
           </div>
+          <span className="badge badge-success">● {invoices.length} Bills Issued</span>
         </div>
 
         <div className="modern-table-responsive">

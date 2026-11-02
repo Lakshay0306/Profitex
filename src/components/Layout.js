@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import Sidebar from "./Sidebar";
 import Chatbot from "./Chatbot";
 import CommandPalette from "./CommandPalette";
-import { Search, LogOut, Sparkles, Command } from "lucide-react";
+import { Search, LogOut, Sparkles, Command, Plus } from "lucide-react";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -16,7 +16,6 @@ const Layout = ({ children }) => {
     navigate("/login");
   };
 
-  // Human-friendly title based on route
   const getPageTitle = (pathname) => {
     switch (pathname) {
       case "/dashboard":
@@ -78,6 +77,18 @@ const Layout = ({ children }) => {
           </div>
 
           <div className="navbar-right">
+            {/* Quick Action Button */}
+            {location.pathname !== "/invoices" && (
+              <button
+                className="topbar-action-pill"
+                onClick={() => navigate("/invoices")}
+                title="Create New Invoice"
+              >
+                <Plus size={14} />
+                <span>New Bill</span>
+              </button>
+            )}
+
             {/* AI Status Chip */}
             <div className="ai-status-chip">
               <Sparkles size={14} className="ai-chip-icon" />
