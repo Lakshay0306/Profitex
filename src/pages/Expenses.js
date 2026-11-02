@@ -1,9 +1,21 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import API from "../api";
+import {
+  Wallet,
+  Camera,
+  Plus,
+  Edit3,
+  Trash2,
+  PieChart,
+  Calendar,
+  Sparkles,
+  CheckCircle2,
+  RefreshCw,
+  TrendingDown
+} from "lucide-react";
 
 const Expenses = () => {
-
   const [expenses, setExpenses] = useState([]);
   const [summaries, setSummaries] = useState({ byCategory: {}, byMonth: {} });
   const [isEditing, setIsEditing] = useState(false);
@@ -15,7 +27,15 @@ const Expenses = () => {
     category: "Rent"
   });
 
-  const categories = ["Rent", "Salary", "Utilities", "Transport", "Office Supplies", "Marketing", "Other"];
+  const categories = [
+    "Rent",
+    "Salary",
+    "Utilities",
+    "Transport",
+    "Office Supplies",
+    "Marketing",
+    "Other"
+  ];
 
   const fetchData = async () => {
     try {
@@ -53,13 +73,17 @@ const Expenses = () => {
     setForm({ title: exp.title, amount: exp.amount, category: exp.category });
     setIsEditing(true);
     setEditId(exp._id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Delete this expense?")) {
-      await API.delete(`/expenses/${id}`);
-      fetchData();
+    if (window.confirm("Are you sure you want to delete this expense record?")) {
+      try {
+        await API.delete(`/expenses/${id}`);
+        fetchData();
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -80,108 +104,155 @@ const Expenses = () => {
       setForm({
         title: data.description || data.vendorName || "Scanned Expense",
         amount: data.amount || "",
-        category: "Other" // default for scanned
+        category: "Other"
       });
-      alert("Receipt scanned successfully! Please review the details before saving.");
+      alert("Receipt scanned successfully! Please review the pre-filled fields before saving.");
     } catch (err) {
       console.log(err);
       alert("Failed to scan receipt. " + (err.response?.data?.message || ""));
     } finally {
       setIsScanning(false);
-      e.target.value = null; // reset file input
+      e.target.value = null;
     }
   };
 
+  const totalExpenseVal = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
+
   return (
     <Layout>
-      <div className="page-title">Expenses</div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "30px" }}>
-        {/* CATEGORY SUMMARY */}
-        <div className="invoice-card" style={{ marginBottom: 0 }}>
-          <h3>Category Breakdown</h3>
-          <div style={{ marginTop: "15px" }}>
+      {/* EXPENSE SUMMARY CARDS */}
+      <div className="dashboard-charts-grid" style={{ marginBottom: 24 }}>
+        {/* Category Breakdown Card */}
+        <div className="modern-chart-card">
+          <div className="chart-card-header">
+            <div>
+              <h3 className="chart-title">Expenditure by Category</h3>
+              <p className="chart-subtitle">Operating costs categorized by allocation</p>
+            </div>
+            <div className="chart-indicator">
+              <PieChart size={16} />
+            </div>
+          </div>
+          <div className="category-breakdown-list">
             {Object.entries(summaries.byCategory).map(([cat, val]) => (
-              <div key={cat} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0" }}>
-                <span>{cat}</span>
-                <span style={{ fontWeight: "600" }}>₹ {val.toFixed(2)}</span>
+              <div key={cat} className="category-breakdown-row">
+                <span className="cat-name-tag">{cat}</span>
+                <div className="cat-val-group">
+                  <span className="cat-amount">₹{val.toFixed(2)}</span>
+                </div>
               </div>
             ))}
+            {Object.keys(summaries.byCategory).length === 0 && (
+              <p className="empty-subtext">No category summaries generated yet.</p>
+            )}
           </div>
         </div>
 
-        {/* MONTHLY SUMMARY */}
-        <div className="invoice-card" style={{ marginBottom: 0 }}>
-          <h3>Monthly Summary</h3>
-          <div style={{ marginTop: "15px" }}>
+        {/* Monthly Summary Card */}
+        <div className="modern-chart-card">
+          <div className="chart-card-header">
+            <div>
+              <h3 className="chart-title">Monthly Expense Outflows</h3>
+              <p className="chart-subtitle">Historical monthly spending trends</p>
+            </div>
+            <div className="chart-indicator">
+              <Calendar size={16} />
+            </div>
+          </div>
+          <div className="category-breakdown-list">
             {Object.entries(summaries.byMonth).map(([month, val]) => (
-              <div key={month} style={{ display: "flex", justifyContent: "space-between", padding: "5px 0" }}>
-                <span>{month}</span>
-                <span style={{ fontWeight: "600" }}>₹ {val.toFixed(2)}</span>
+              <div key={month} className="category-breakdown-row">
+                <span className="cat-name-tag">{month}</span>
+                <span className="cat-amount">₹{val.toFixed(2)}</span>
               </div>
             ))}
+            {Object.keys(summaries.byMonth).length === 0 && (
+              <p className="empty-subtext">No monthly trends recorded yet.</p>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="invoice-card">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>{isEditing ? "Edit Expense" : "Add New Expense"}</h3>
-          
-          <label style={{ 
-            cursor: 'pointer', 
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
-            color: 'white', 
-            padding: '8px 16px', 
-            borderRadius: '20px',
-            fontSize: '14px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px'
-          }}>
-            {isScanning ? "⏳ Scanning..." : "📸 Auto-Fill from Receipt"}
-            <input 
-              type="file" 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-              onChange={handleScanReceipt} 
+      {/* ADD / EDIT EXPENSE FORM & OCR SCANNER */}
+      <div className="modern-content-card">
+        <div className="card-top-bar">
+          <div className="card-title-group">
+            <Wallet size={18} className="card-header-icon" />
+            <h3 className="card-headline">{isEditing ? "Edit Expense Entry" : "Record Operating Expense"}</h3>
+          </div>
+
+          {/* AI Receipt Scanner Trigger */}
+          <label className="btn-modern-ai-scanner" title="Upload paper receipt or invoice to auto-extract details">
+            {isScanning ? (
+              <>
+                <RefreshCw size={14} className="spin-animation" />
+                <span>Scanning Receipt via Gemini AI...</span>
+              </>
+            ) : (
+              <>
+                <Camera size={15} />
+                <span>Smart Receipt OCR Scanner</span>
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleScanReceipt}
               disabled={isScanning}
             />
           </label>
         </div>
 
-        <form onSubmit={submit} style={{ display: "flex", gap: "10px", marginTop: "15px", flexWrap: "wrap" }}>
-          <input
-            placeholder="Expense Title"
-            value={form.title}
-            required
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            style={{ flex: 2, minWidth: "200px" }}
-          />
+        <form onSubmit={submit} className="modern-form">
+          <div className="form-grid-3">
+            <div className="form-field-group" style={{ gridColumn: "span 2" }}>
+              <label>Expense Title / Description *</label>
+              <input
+                placeholder="e.g. Office Electricity Bill, Cloud Server Hosting"
+                value={form.title}
+                required
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+              />
+            </div>
 
-          <input
-            type="number"
-            placeholder="Amount"
-            value={form.amount}
-            required
-            onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })}
-            style={{ flex: 1, minWidth: "120px" }}
-          />
+            <div className="form-field-group">
+              <label>Amount (₹) *</label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="e.g. 2450.00"
+                value={form.amount}
+                required
+                onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })}
+              />
+            </div>
 
-          <select
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            style={{ padding: "10px", borderRadius: "10px", border: "1px solid #e2e8f0", flex: 1, minWidth: "150px" }}
-          >
-            {categories.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
+            <div className="form-field-group">
+              <label>Category</label>
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="modern-select"
+              >
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button className="btn-primary">{isEditing ? "Update" : "Add Expense"}</button>
+          <div className="form-action-row">
+            <button type="submit" className="btn-modern-primary">
+              {isEditing ? <CheckCircle2 size={16} /> : <Plus size={16} />}
+              <span>{isEditing ? "Update Expense" : "Record Expense"}</span>
+            </button>
             {isEditing && (
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-modern-ghost"
                 onClick={() => {
                   setIsEditing(false);
                   setEditId(null);
@@ -195,32 +266,70 @@ const Expenses = () => {
         </form>
       </div>
 
-      <div className="invoice-card" style={{ marginTop: "20px", padding: 0, overflow: "hidden" }}>
-        <table className="table" style={{ marginTop: 0 }}>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {expenses.map(exp => (
-              <tr key={exp._id}>
-                <td>{exp.title}</td>
-                <td><span style={{ padding: "4px 8px", background: "#f1f5f9", borderRadius: "6px", fontSize: "12px" }}>{exp.category}</span></td>
-                <td style={{ fontWeight: "600" }}>₹ {exp.amount.toFixed(2)}</td>
-                <td>{new Date(exp.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <button onClick={() => handleEdit(exp)} style={{ background: "none", border: "none", color: "#2563eb", cursor: "pointer", marginRight: "10px" }}>Edit</button>
-                  <button onClick={() => handleDelete(exp._id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer" }}>Delete</button>
-                </td>
+      {/* EXPENSES LEDGER TABLE */}
+      <div className="modern-content-card" style={{ marginTop: 24 }}>
+        <div className="card-top-bar">
+          <div className="card-title-group">
+            <TrendingDown size={18} className="card-header-icon" />
+            <h3 className="card-headline">Expense Ledger ({expenses.length} records)</h3>
+          </div>
+          <span className="badge badge-danger">Total Outflow: ₹{totalExpenseVal.toFixed(2)}</span>
+        </div>
+
+        <div className="modern-table-responsive">
+          <table className="modern-data-table">
+            <thead>
+              <tr>
+                <th>Expense Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Recorded Date</th>
+                <th style={{ textAlign: "right" }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {expenses.map((exp) => (
+                <tr key={exp._id}>
+                  <td>
+                    <strong>{exp.title}</strong>
+                  </td>
+                  <td>
+                    <span className="category-pill">{exp.category}</span>
+                  </td>
+                  <td>
+                    <span className="price-tag expense-price-tag">₹{exp.amount.toFixed(2)}</span>
+                  </td>
+                  <td>{new Date(exp.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</td>
+                  <td style={{ textAlign: "right" }}>
+                    <div className="table-action-buttons">
+                      <button
+                        onClick={() => handleEdit(exp)}
+                        className="action-icon-btn edit-btn"
+                        title="Edit Expense"
+                      >
+                        <Edit3 size={15} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(exp._id)}
+                        className="action-icon-btn delete-btn"
+                        title="Delete Expense"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {expenses.length === 0 && (
+                <tr>
+                  <td colSpan="5" className="table-empty-message">
+                    No expense entries logged yet. Click "+ Record Expense" or scan a paper receipt.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Layout>
   );

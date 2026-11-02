@@ -1,26 +1,111 @@
-import { Link, useLocation } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Receipt,
+  Package,
+  Truck,
+  Wallet,
+  Settings,
+  Sparkles,
+  LogOut,
+  ChevronRight
+} from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  const navItems = [
+    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { name: "Invoices & Billing", path: "/invoices", icon: Receipt },
+    { name: "Products & Stock", path: "/products", icon: Package },
+    { name: "Purchases", path: "/purchases", icon: Truck },
+    { name: "Expenses", path: "/expenses", icon: Wallet },
+    { name: "Settings", path: "/settings", icon: Settings },
+  ];
+
+  const getInitials = (name) => {
+    if (!name) return "AD";
+    const parts = name.trim().split(" ");
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
 
   return (
-    <div className="sidebar">
-      <h2 className="logo">NexaVentory</h2>
+    <aside className="sidebar">
+      {/* Brand Header */}
+      <div className="sidebar-brand">
+        <div className="brand-icon">
+          <Sparkles size={20} className="brand-sparkle" />
+        </div>
+        <div className="brand-details">
+          <span className="brand-title">NexaVentory</span>
+          <span className="brand-subtitle">AI ERP System</span>
+        </div>
+      </div>
 
-      <nav>
-        <Link className={location.pathname === "/dashboard" ? "active" : ""} to="/dashboard">
-          Dashboard
-        </Link>
+      {/* Navigation */}
+      <div className="sidebar-menu-wrapper">
+        <div className="menu-category-label">OPERATIONS & ANALYTICS</div>
+        <nav className="sidebar-nav">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? "active" : ""}`}
+              >
+                <div className="nav-item-icon-wrapper">
+                  <Icon size={18} />
+                </div>
+                <span className="nav-item-text">{item.name}</span>
+                {isActive && <ChevronRight size={14} className="active-arrow" />}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
-        <Link className={location.pathname === "/products" ? "active" : ""} to="/products">
-          Products
-        </Link>
+      {/* AI Assistant Promo Pill */}
+      <div className="sidebar-ai-pill">
+        <div className="ai-pill-dot" />
+        <span>Gemini AI Engine Active</span>
+      </div>
 
-        <Link to="/invoices">Invoices</Link>
-        <Link to="/expenses">Expenses</Link>
-        <Link to="/settings">Settings</Link>
-      </nav>
-    </div>
+      {/* Bottom User Profile Section */}
+      <div className="sidebar-footer">
+        <div className="user-profile-card">
+          <div className="user-avatar">
+            {getInitials(user?.name)}
+          </div>
+          <div className="user-info">
+            <span className="user-name" title={user?.name || "Admin"}>
+              {user?.name || "Admin"}
+            </span>
+            <span className="user-role">Administrator</span>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="user-logout-btn"
+            title="Log Out"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </div>
+    </aside>
   );
 };
 

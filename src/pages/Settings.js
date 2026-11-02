@@ -2,6 +2,15 @@ import { useEffect, useState, useContext } from "react";
 import Layout from "../components/Layout";
 import API from "../api";
 import { AuthContext } from "../context/AuthContext";
+import {
+  Settings as SettingsIcon,
+  Building2,
+  User,
+  KeyRound,
+  CheckCircle2,
+  Upload,
+  ShieldCheck
+} from "lucide-react";
 
 const Settings = () => {
   const { user, login } = useContext(AuthContext);
@@ -31,7 +40,9 @@ const Settings = () => {
         if (res.data) {
           setForm(res.data);
         }
-      } catch (err) { console.log(err); }
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchCompany();
     if (user) {
@@ -51,25 +62,28 @@ const Settings = () => {
 
     try {
       await API.post("/company", formData);
-      alert("Company details updated!");
-    } catch (err) { alert("Failed to update company"); }
+      alert("Company details updated successfully!");
+    } catch (err) {
+      alert("Failed to update company information");
+    }
   };
 
   const submitProfile = async (e) => {
     e.preventDefault();
     try {
       const { data } = await API.put("/user/profile", profileForm);
-      // Update local storage and context
       const token = localStorage.getItem("token");
       login({ token, user: data });
-      alert("Profile updated!");
-    } catch (err) { alert("Failed to update profile"); }
+      alert("Profile details updated successfully!");
+    } catch (err) {
+      alert("Failed to update user profile");
+    }
   };
 
   const submitPassword = async (e) => {
     e.preventDefault();
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      alert("Passwords do not match");
+      alert("New password and confirmation do not match!");
       return;
     }
     try {
@@ -78,7 +92,7 @@ const Settings = () => {
         newPassword: passwordForm.newPassword
       });
       setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
-      alert("Password updated successfully!");
+      alert("Security password updated successfully!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to update password");
     }
@@ -86,116 +100,158 @@ const Settings = () => {
 
   return (
     <Layout>
-      <div className="page-title">System Settings</div>
+      <div className="dashboard-charts-grid" style={{ alignItems: "start" }}>
+        {/* BUSINESS INFO CARD */}
+        <div className="modern-content-card">
+          <div className="card-top-bar">
+            <div className="card-title-group">
+              <Building2 size={18} className="card-header-icon" />
+              <h3 className="card-headline">Enterprise Store Details</h3>
+            </div>
+          </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "25px" }}>
-        
-        {/* BUSINESS INFO */}
-        <div className="invoice-card">
-          <h3 style={{ marginBottom: "15px" }}>Business Details</h3>
-          <form onSubmit={submitCompany}>
-            <div className="form-group">
-              <label>Company Name</label>
+          <form onSubmit={submitCompany} className="modern-form">
+            <div className="form-field-group">
+              <label>Business / Enterprise Legal Name</label>
               <input
-                placeholder="Company Name"
+                placeholder="e.g. NexaRetail Solutions LLP"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             </div>
 
-            <div className="form-group">
-              <label>GST Number</label>
+            <div className="form-field-group">
+              <label>GSTIN / Tax Registration Number</label>
               <input
-                placeholder="GST Number"
+                placeholder="e.g. 07AAAAA0000A1Z5"
                 value={form.gstNumber}
                 onChange={(e) => setForm({ ...form, gstNumber: e.target.value })}
               />
             </div>
 
-            <div className="form-group">
-              <label>Business Address</label>
-              <input
-                placeholder="Address"
+            <div className="form-field-group">
+              <label>Operating Address (Printed on Invoices)</label>
+              <textarea
+                placeholder="Enter physical address, state and PIN code..."
                 value={form.address}
+                rows={3}
+                className="modern-textarea"
                 onChange={(e) => setForm({ ...form, address: e.target.value })}
               />
             </div>
 
-            <div className="form-group">
-              <label>Business Logo</label>
-              <input
-                type="file"
-                onChange={(e) => setLogo(e.target.files[0])}
-                style={{ padding: "8px 12px", background: "#f8fafc" }}
-              />
+            <div className="form-field-group">
+              <label>Official Brand Logo</label>
+              <div className="file-upload-box">
+                <Upload size={18} />
+                <span>Upload Logo File (PNG/JPG)</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setLogo(e.target.files[0])}
+                  className="hidden-file-input"
+                />
+              </div>
             </div>
 
-            <button className="btn-primary" style={{ width: "100%", marginTop: "10px" }}>Save Business Info</button>
+            <button type="submit" className="btn-modern-primary" style={{ width: "100%", justifyContent: "center" }}>
+              <CheckCircle2 size={16} />
+              <span>Save Enterprise Details</span>
+            </button>
           </form>
         </div>
 
-        {/* PROFILE & PASSWORD */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
-          
-          <div className="invoice-card">
-            <h3 style={{ marginBottom: "15px" }}>User Profile</h3>
-            <div style={{ marginBottom: "20px", padding: "15px", background: "#f8fafc", borderRadius: "8px" }}>
-              <div style={{ fontSize: "14px", marginBottom: "8px" }}><strong>Email:</strong> {user?.email}</div>
-              <div style={{ fontSize: "14px" }}><strong>Role:</strong> <span style={{ textTransform: "capitalize", color: "#2563eb", fontWeight: "600" }}>{user?.role}</span></div>
+        {/* USER PROFILE & SECURITY */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {/* User Profile Card */}
+          <div className="modern-content-card">
+            <div className="card-top-bar">
+              <div className="card-title-group">
+                <User size={18} className="card-header-icon" />
+                <h3 className="card-headline">Personal Profile</h3>
+              </div>
+              <span className="badge badge-success">Active Session</span>
             </div>
-            
-            <form onSubmit={submitProfile}>
-              <div className="form-group">
-                <label>Full Name</label>
+
+            <div className="profile-meta-banner">
+              <div className="meta-row">
+                <span className="meta-label">Email:</span>
+                <span className="meta-val">{user?.email || "admin@nexaventory.com"}</span>
+              </div>
+              <div className="meta-row">
+                <span className="meta-label">Role:</span>
+                <span className="meta-val badge badge-warning" style={{ textTransform: "uppercase" }}>
+                  {user?.role || "Administrator"}
+                </span>
+              </div>
+            </div>
+
+            <form onSubmit={submitProfile} className="modern-form">
+              <div className="form-field-group">
+                <label>Display Name</label>
                 <input
                   placeholder="Your Name"
                   value={profileForm.name}
                   onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
                 />
               </div>
-              <button className="btn-primary" style={{ width: "100%", marginTop: "5px" }}>Update Profile</button>
+
+              <button type="submit" className="btn-modern-primary" style={{ width: "100%", justifyContent: "center" }}>
+                <span>Update Profile Name</span>
+              </button>
             </form>
           </div>
 
-          <div className="invoice-card">
-            <h3 style={{ marginBottom: "15px" }}>Update Password</h3>
-            <form onSubmit={submitPassword}>
-              <div className="form-group">
+          {/* Password Security Card */}
+          <div className="modern-content-card">
+            <div className="card-top-bar">
+              <div className="card-title-group">
+                <KeyRound size={18} className="card-header-icon" />
+                <h3 className="card-headline">Account Password & Security</h3>
+              </div>
+              <ShieldCheck size={18} color="#10b981" />
+            </div>
+
+            <form onSubmit={submitPassword} className="modern-form">
+              <div className="form-field-group">
                 <label>Current Password</label>
                 <input
                   type="password"
-                  placeholder="Enter Current Password"
+                  placeholder="••••••••"
                   required
                   value={passwordForm.currentPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
                 />
               </div>
-              <div className="form-group">
+
+              <div className="form-field-group">
                 <label>New Password</label>
                 <input
                   type="password"
-                  placeholder="Enter New Password"
+                  placeholder="••••••••"
                   required
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
                 />
               </div>
-              <div className="form-group">
+
+              <div className="form-field-group">
                 <label>Confirm New Password</label>
                 <input
                   type="password"
-                  placeholder="Confirm New Password"
+                  placeholder="••••••••"
                   required
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
                 />
               </div>
-              <button className="btn-primary" style={{ width: "100%", marginTop: "5px" }}>Update Password</button>
+
+              <button type="submit" className="btn-modern-primary" style={{ width: "100%", justifyContent: "center" }}>
+                <span>Change Password</span>
+              </button>
             </form>
           </div>
-
         </div>
-
       </div>
     </Layout>
   );

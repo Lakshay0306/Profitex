@@ -1,9 +1,23 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import API from "../api";
+import {
+  Package,
+  Plus,
+  Search,
+  Filter,
+  Edit3,
+  Trash2,
+  TrendingUp,
+  Coins,
+  AlertTriangle,
+  Sparkles,
+  CheckCircle2,
+  RefreshCw,
+  Boxes
+} from "lucide-react";
 
 const Products = () => {
-
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
@@ -63,7 +77,6 @@ const Products = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-
     try {
       if (isEditing) {
         await API.put(`/products/${editId}`, form);
@@ -99,7 +112,7 @@ const Products = () => {
     });
     setIsEditing(true);
     setEditId(p._id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
@@ -113,138 +126,192 @@ const Products = () => {
     }
   };
 
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = products.filter((p) => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter === "" || p.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
-  const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
-  const lowStockCount = products.filter(p => p.quantity < 5).length;
+  const categories = [...new Set(products.map((p) => p.category).filter(Boolean))];
+  const lowStockCount = products.filter((p) => p.quantity < 5).length;
 
   return (
     <Layout>
-
-      <h2 style={{ marginBottom: "20px" }}>Products</h2>
-
-      {/* LOW STOCK ALERT */}
+      {/* LOW STOCK ALERT BANNER */}
       {lowStockCount > 0 && (
-        <div style={{
-          background: "#fee2e2",
-          color: "#b91c1c",
-          padding: "15px",
-          borderRadius: "10px",
-          marginBottom: "20px",
-          fontWeight: "600",
-          border: "1px solid #fecaca"
-        }}>
-          ⚠️ Alert: {lowStockCount} products are low on stock (Quantity &lt; 5).
+        <div className="modern-alert-banner alert-danger">
+          <AlertTriangle size={18} className="alert-icon" />
+          <div className="alert-content">
+            <span className="alert-title">Critical Inventory Warning</span>
+            <span className="alert-desc">
+              {lowStockCount} product{lowStockCount > 1 ? "s are" : " is"} running below safe buffer (Stock &lt; 5 units). Prompt restocking recommended.
+            </span>
+          </div>
         </div>
       )}
 
-      {/* AI DEMAND PREDICTION ALERT */}
-      <div className="invoice-card" style={{ marginBottom: "20px", background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)', border: '1px solid #bbf7d0' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ margin: 0, color: '#166534', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>📈</span> AI Demand Prediction
-          </h3>
-          <button onClick={fetchDemand} className="btn-primary" style={{ background: '#166534', padding: '6px 12px', fontSize: '13px' }}>
-            {loadingAi ? "Analyzing..." : "Run AI Analysis"}
-          </button>
-        </div>
-        
-        {aiDemand && aiDemand.length > 0 && (
-          <div style={{ marginTop: "15px", display: "flex", gap: "15px", flexWrap: "wrap" }}>
-            {aiDemand.map((item, i) => (
-              <div key={i} style={{ background: "white", padding: "10px 15px", borderRadius: "8px", border: "1px solid #bbf7d0", flex: 1, minWidth: "200px" }}>
-                <strong>{item.productName}</strong>
-                <p style={{ margin: "5px 0", fontSize: "13px", color: "#475569" }}>{item.reason}</p>
-                <div style={{ fontSize: "13px", color: "#166534", fontWeight: "600" }}>
-                  Suggested Reorder: {item.recommendedOrder} units
-                </div>
+      {/* AI INTELLIGENCE ROW */}
+      <div className="ai-features-grid">
+        {/* AI Demand Prediction Card */}
+        <div className="ai-feature-card ai-feature-demand">
+          <div className="feature-card-header">
+            <div className="feature-header-left">
+              <div className="feature-icon-badge demand-badge">
+                <TrendingUp size={18} />
               </div>
-            ))}
+              <div>
+                <h4 className="feature-title">AI Demand Prediction</h4>
+                <p className="feature-subtitle">Run-rate heuristics & stockout prevention</p>
+              </div>
+            </div>
+            <button
+              onClick={fetchDemand}
+              disabled={loadingAi}
+              className="feature-action-btn btn-demand"
+            >
+              <RefreshCw size={14} className={loadingAi ? "spin-animation" : ""} />
+              <span>{loadingAi ? "Calculating..." : "Run Prediction"}</span>
+            </button>
           </div>
-        )}
+
+          {aiDemand && aiDemand.length > 0 && (
+            <div className="feature-chips-container">
+              {aiDemand.map((item, i) => (
+                <div key={i} className="ai-suggestion-chip chip-demand">
+                  <div className="chip-product-name">{item.productName}</div>
+                  <div className="chip-reason-text">{item.reason}</div>
+                  <div className="chip-metric-tag tag-demand">
+                    Recommended Order: <strong>+{item.recommendedOrder} units</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* AI Pricing Optimization Card */}
+        <div className="ai-feature-card ai-feature-pricing">
+          <div className="feature-card-header">
+            <div className="feature-header-left">
+              <div className="feature-icon-badge pricing-badge">
+                <Coins size={18} />
+              </div>
+              <div>
+                <h4 className="feature-title">AI Pricing Optimization</h4>
+                <p className="feature-subtitle">Elasticity & gross margin maximizer</p>
+              </div>
+            </div>
+            <button
+              onClick={fetchPricing}
+              disabled={loadingPricing}
+              className="feature-action-btn btn-pricing"
+            >
+              <Sparkles size={14} className={loadingPricing ? "spin-animation" : ""} />
+              <span>{loadingPricing ? "Optimizing..." : "Optimize Rates"}</span>
+            </button>
+          </div>
+
+          {aiPricing && aiPricing.length > 0 && (
+            <div className="feature-chips-container">
+              {aiPricing.map((item, i) => (
+                <div key={i} className="ai-suggestion-chip chip-pricing">
+                  <div className="chip-product-name">{item.productName}</div>
+                  <div className="chip-reason-text">{item.reason}</div>
+                  <div className="chip-metric-tag tag-pricing">
+                    Price: ₹{item.currentPrice} → <strong>₹{item.recommendedPrice}</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* AI PRICING OPTIMIZATION */}
-      <div className="invoice-card" style={{ marginBottom: "20px", background: 'linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%)', border: '1px solid #f5d0fe' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ margin: 0, color: '#86198f', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>💰</span> AI Pricing Optimization
-          </h3>
-          <button onClick={fetchPricing} className="btn-primary" style={{ background: '#86198f', padding: '6px 12px', fontSize: '13px' }}>
-            {loadingPricing ? "Analyzing..." : "Optimize Prices"}
-          </button>
+      {/* ADD / EDIT PRODUCT FORM */}
+      <div className="modern-content-card">
+        <div className="card-top-bar">
+          <div className="card-title-group">
+            <Package size={18} className="card-header-icon" />
+            <h3 className="card-headline">{isEditing ? "Edit Product Details" : "Add New Inventory Item"}</h3>
+          </div>
+          {isEditing && (
+            <span className="badge badge-warning">Editing Mode Active</span>
+          )}
         </div>
-        
-        {aiPricing && aiPricing.length > 0 && (
-          <div style={{ marginTop: "15px", display: "flex", gap: "15px", flexWrap: "wrap" }}>
-            {aiPricing.map((item, i) => (
-              <div key={i} style={{ background: "white", padding: "10px 15px", borderRadius: "8px", border: "1px solid #f5d0fe", flex: 1, minWidth: "200px" }}>
-                <strong>{item.productName}</strong>
-                <p style={{ margin: "5px 0", fontSize: "13px", color: "#475569" }}>{item.reason}</p>
-                <div style={{ fontSize: "13px", color: "#86198f", fontWeight: "600" }}>
-                  Current Price: ₹{item.currentPrice} → Suggested: ₹{item.recommendedPrice}
-                </div>
-              </div>
-            ))}
+
+        <form onSubmit={submit} className="modern-form">
+          <div className="form-grid-3">
+            <div className="form-field-group">
+              <label>Product Title / Model *</label>
+              <input
+                placeholder="e.g. Dell XPS 15, Parle-G Biscuit"
+                value={form.name}
+                required
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field-group">
+              <label>Category</label>
+              <input
+                placeholder="e.g. Electronics, Groceries"
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field-group">
+              <label>Quantity in Stock *</label>
+              <input
+                type="number"
+                placeholder="e.g. 50"
+                value={form.quantity}
+                required
+                onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field-group">
+              <label>Selling Price (₹) *</label>
+              <input
+                type="number"
+                step="0.01"
+                placeholder="e.g. 899.00"
+                value={form.price}
+                required
+                onChange={(e) => setForm({ ...form, price: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field-group">
+              <label>GST Rate (%)</label>
+              <input
+                type="number"
+                placeholder="e.g. 18"
+                value={form.gst}
+                onChange={(e) => setForm({ ...form, gst: e.target.value })}
+              />
+            </div>
+
+            <div className="form-field-group">
+              <label>Vendor / Supplier</label>
+              <input
+                placeholder="e.g. ABC Wholesalers Pvt Ltd"
+                value={form.supplier}
+                onChange={(e) => setForm({ ...form, supplier: e.target.value })}
+              />
+            </div>
           </div>
-        )}
-      </div>
 
-      {/* ADD/EDIT PRODUCT FORM */}
-
-      <div className="invoice-card">
-
-        <h3>{isEditing ? "Edit Product" : "Add Product"}</h3>
-
-        <form onSubmit={submit}>
-          <div className="form-grid">
-            <input
-              placeholder="Product Name"
-              value={form.name}
-              required
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-            <input
-              placeholder="Category"
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="Quantity"
-              value={form.quantity}
-              required
-              onChange={(e) => setForm({ ...form, quantity: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="Price"
-              value={form.price}
-              required
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-            />
-            <input
-              type="number"
-              placeholder="GST %"
-              value={form.gst}
-              onChange={(e) => setForm({ ...form, gst: e.target.value })}
-            />
-            <input
-              placeholder="Supplier"
-              value={form.supplier}
-              onChange={(e) => setForm({ ...form, supplier: e.target.value })}
-            />
-          </div>
-          <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-            <button className="btn-primary">{isEditing ? "Update Product" : "Add Product"}</button>
+          <div className="form-action-row">
+            <button type="submit" className="btn-modern-primary">
+              {isEditing ? <CheckCircle2 size={16} /> : <Plus size={16} />}
+              <span>{isEditing ? "Update Product" : "Save to Inventory"}</span>
+            </button>
             {isEditing && (
               <button
                 type="button"
-                className="btn-secondary"
+                className="btn-modern-ghost"
                 onClick={() => {
                   setIsEditing(false);
                   setEditId(null);
@@ -255,95 +322,114 @@ const Products = () => {
               </button>
             )}
           </div>
-
         </form>
-
       </div>
 
-      {/* PRODUCTS TABLE */}
+      {/* PRODUCTS DIRECTORY TABLE */}
+      <div className="modern-content-card">
+        <div className="card-top-bar table-toolbar">
+          <div className="card-title-group">
+            <Boxes size={18} className="card-header-icon" />
+            <h3 className="card-headline">Inventory Directory ({filteredProducts.length} items)</h3>
+          </div>
 
-      <div className="invoice-card">
+          <div className="table-filter-group">
+            <div className="table-search-box">
+              <Search size={15} className="table-search-icon" />
+              <input
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <h3>Product Inventory</h3>
-          <div style={{ display: "flex", gap: "10px" }}>
-            <input
-              placeholder="Search..."
-              className="search-input"
-              style={{ width: "200px", marginBottom: 0 }}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <select
-              style={{ padding: "8px", borderRadius: "8px", border: "1px solid #e2e8f0" }}
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <div className="table-select-box">
+              <Filter size={15} className="table-filter-icon" />
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
-        <table className="table">
-
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Stock</th>
-              <th>Price</th>
-              <th>GST</th>
-              <th>Supplier</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            {filteredProducts.map((p) => (
-              <tr key={p._id}>
-
-                <td>{p.name}</td>
-
-                <td>{p.category}</td>
-
-                <td>
-                  <span className={p.quantity < 5 ? "low-stock" : "in-stock"}>
-                    {p.quantity}
-                  </span>
-                </td>
-
-                <td>₹ {p.price}</td>
-
-                <td>{p.gst}%</td>
-
-                <td>{p.supplier}</td>
-
-                <td>
-                  <button
-                    onClick={() => handleEdit(p)}
-                    style={{ background: "none", border: "none", color: "#2563eb", cursor: "pointer", marginRight: "10px", fontWeight: "600" }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(p._id)}
-                    style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontWeight: "600" }}
-                  >
-                    Delete
-                  </button>
-                </td>
-
+        <div className="modern-table-responsive">
+          <table className="modern-data-table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Stock Status</th>
+                <th>Unit Price</th>
+                <th>GST Rate</th>
+                <th>Supplier</th>
+                <th style={{ textAlign: "right" }}>Actions</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {filteredProducts.map((p) => {
+                let stockBadge = <span className="status-badge badge-success">● {p.quantity} In Stock</span>;
+                if (p.quantity < 5) {
+                  stockBadge = <span className="status-badge badge-danger">● {p.quantity} Low Stock</span>;
+                } else if (p.quantity < 15) {
+                  stockBadge = <span className="status-badge badge-warning">● {p.quantity} Moderate</span>;
+                }
 
-          </tbody>
-
-        </table>
-
+                return (
+                  <tr key={p._id}>
+                    <td>
+                      <div className="product-cell-name">
+                        <strong>{p.name}</strong>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="category-pill">{p.category || "General"}</span>
+                    </td>
+                    <td>{stockBadge}</td>
+                    <td>
+                      <span className="price-tag">₹{p.price.toLocaleString()}</span>
+                    </td>
+                    <td>{p.gst || 0}%</td>
+                    <td>{p.supplier || "—"}</td>
+                    <td style={{ textAlign: "right" }}>
+                      <div className="table-action-buttons">
+                        <button
+                          onClick={() => handleEdit(p)}
+                          className="action-icon-btn edit-btn"
+                          title="Edit Product"
+                        >
+                          <Edit3 size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(p._id)}
+                          className="action-icon-btn delete-btn"
+                          title="Delete Product"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+              {filteredProducts.length === 0 && (
+                <tr>
+                  <td colSpan="7" className="table-empty-message">
+                    No products matching your search criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-
     </Layout>
   );
 };
