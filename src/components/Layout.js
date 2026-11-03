@@ -68,10 +68,10 @@ const Layout = ({ children }) => {
               }}
               title="Click or press Ctrl+K to open Search"
             >
-              <Search size={16} className="search-icon" />
-              <span className="search-placeholder">Quick search commands or pages...</span>
+              <Search size={15} className="search-icon" />
+              <span className="search-placeholder">Quick search commands...</span>
               <kbd className="search-kbd-badge">
-                <Command size={11} style={{ marginRight: 2 }} /> K
+                <Command size={10} style={{ marginRight: 2 }} /> K
               </kbd>
             </div>
           </div>
@@ -91,8 +91,9 @@ const Layout = ({ children }) => {
 
             {/* AI Status Chip */}
             <div className="ai-status-chip">
-              <Sparkles size={14} className="ai-chip-icon" />
-              <span>Gemini AI Connected</span>
+              <div className="online-dot-pulse" />
+              <Sparkles size={13} className="ai-chip-icon" />
+              <span>Gemini AI</span>
             </div>
 
             {/* Profile & Quick Logout */}
@@ -109,7 +110,7 @@ const Layout = ({ children }) => {
                 onClick={handleLogout}
                 title="Log Out"
               >
-                <LogOut size={16} />
+                <LogOut size={15} />
               </button>
             </div>
           </div>

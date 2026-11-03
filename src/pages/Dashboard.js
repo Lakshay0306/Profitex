@@ -141,11 +141,16 @@ const Dashboard = () => {
           pointStyle: "circle",
           padding: 15,
           font: { family: "'Inter', sans-serif", size: 12, weight: "500" },
+          color: "#cbd5e1",
         },
       },
       tooltip: {
-        backgroundColor: "#0f172a",
-        titleFont: { family: "'Inter', sans-serif", size: 13 },
+        backgroundColor: "#0b1222",
+        borderColor: "#1e2f4d",
+        borderWidth: 1,
+        titleColor: "#f8fafc",
+        bodyColor: "#cbd5e1",
+        titleFont: { family: "'Inter', sans-serif", size: 13, weight: "600" },
         bodyFont: { family: "'Inter', sans-serif", size: 12 },
         padding: 12,
         cornerRadius: 8,
@@ -154,13 +159,13 @@ const Dashboard = () => {
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { family: "'Inter', sans-serif", size: 11 }, color: "#64748b" },
+        ticks: { font: { family: "'Inter', sans-serif", size: 11 }, color: "#94a3b8" },
       },
       y: {
-        grid: { color: "#f1f5f9" },
+        grid: { color: "#1e2f4d" },
         ticks: {
           font: { family: "'Inter', sans-serif", size: 11 },
-          color: "#64748b",
+          color: "#94a3b8",
           callback: (value) => "₹" + value.toLocaleString(),
         },
       },
