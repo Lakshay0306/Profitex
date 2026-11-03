@@ -51,9 +51,11 @@ const Products = () => {
     setLoadingAi(true);
     try {
       const { data } = await API.get("/ai/predict-demand");
-      setAiDemand(data);
+      if (Array.isArray(data)) {
+        setAiDemand(data);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Demand prediction error:", err);
     } finally {
       setLoadingAi(false);
     }
@@ -63,9 +65,11 @@ const Products = () => {
     setLoadingPricing(true);
     try {
       const { data } = await API.get("/ai/optimize-pricing");
-      setAiPricing(data);
+      if (Array.isArray(data)) {
+        setAiPricing(data);
+      }
     } catch (err) {
-      console.log(err);
+      console.error("Pricing optimization error:", err);
     } finally {
       setLoadingPricing(false);
     }
