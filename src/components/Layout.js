@@ -19,19 +19,40 @@ const Layout = ({ children }) => {
   const getPageTitle = (pathname) => {
     switch (pathname) {
       case "/dashboard":
-        return { title: "Executive Dashboard", subtitle: "Real-time metrics, AI predictions & business health" };
+        return { 
+          title: "Executive Dashboard", 
+          subtitle: "Real-time revenue metrics, financial health & inventory tracking" 
+        };
       case "/invoices":
-        return { title: "Invoices & Smart Billing", subtitle: "Generate GST-compliant invoices and manage client billing" };
+        return { 
+          title: "Invoices & Billing", 
+          subtitle: "Generate GST-compliant tax invoices and manage client accounts" 
+        };
       case "/products":
-        return { title: "Products & Inventory", subtitle: "Stock levels, pricing optimization & AI demand forecast" };
+        return { 
+          title: "Products & Inventory", 
+          subtitle: "Live catalog stock, pricing optimization & demand forecasting" 
+        };
       case "/purchases":
-        return { title: "Purchase Orders", subtitle: "Inbound inventory purchases & supplier transaction tracking" };
+        return { 
+          title: "Purchase Orders", 
+          subtitle: "Inbound inventory purchases & vendor transaction records" 
+        };
       case "/expenses":
-        return { title: "Expense Management", subtitle: "Smart OCR receipt scanning and operating expenditure records" };
+        return { 
+          title: "Expense Management", 
+          subtitle: "Operational expenditure tracking & smart receipt digitization" 
+        };
       case "/settings":
-        return { title: "System Settings", subtitle: "Configure store details, tax defaults and preferences" };
+        return { 
+          title: "Store Settings", 
+          subtitle: "Business profile, GSTIN configuration & account preferences" 
+        };
       default:
-        return { title: "Workspace", subtitle: "NexaVentory AI Business Operating System" };
+        return { 
+          title: "Console", 
+          subtitle: "NexaVentory Business Management Platform" 
+        };
     }
   };
 
@@ -69,7 +90,7 @@ const Layout = ({ children }) => {
               title="Click or press Ctrl+K to open Search"
             >
               <Search size={15} className="search-icon" />
-              <span className="search-placeholder">Quick search commands...</span>
+              <span className="search-placeholder">Quick search commands or pages...</span>
               <kbd className="search-kbd-badge">
                 <Command size={10} style={{ marginRight: 2 }} /> K
               </kbd>
@@ -89,11 +110,10 @@ const Layout = ({ children }) => {
               </button>
             )}
 
-            {/* AI Status Chip */}
-            <div className="ai-status-chip">
-              <div className="online-dot-pulse" />
+            {/* Subtle Copilot Badge */}
+            <div className="ai-status-chip" title="AI Copilot Engine Active">
               <Sparkles size={13} className="ai-chip-icon" />
-              <span>Gemini AI</span>
+              <span>AI Copilot</span>
             </div>
 
             {/* Profile & Quick Logout */}
@@ -118,14 +138,12 @@ const Layout = ({ children }) => {
 
         {/* Content Area */}
         <main className="main-content">
-          <div className="content-inner">
-            {children}
-          </div>
+          <div className="content-inner">{children}</div>
         </main>
       </div>
 
-      <Chatbot />
       <CommandPalette />
+      <Chatbot />
     </div>
   );
 };

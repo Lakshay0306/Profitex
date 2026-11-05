@@ -12,24 +12,27 @@
 }
 
 .chatbot-toggle {
-  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #1e2f4d;
   border-radius: 9999px;
-  padding: 12px 20px;
-  font-size: 14px;
+  padding: 10px 18px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(37, 99, 235, 0.4);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .chatbot-toggle:hover {
+  background: #15223c;
+  border-color: #3b82f6;
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(37, 99, 235, 0.5);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.7), 0 0 12px rgba(59, 130, 246, 0.25);
 }
 
 .toggle-icon-wrap {

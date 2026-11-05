@@ -58,10 +58,10 @@ const Chatbot = () => {
                 <Bot size={18} />
               </div>
               <div className="bot-header-info">
-                <h4>AI Virtual Manager</h4>
+                <h4>Nexa Copilot</h4>
                 <div className="bot-online-pill">
                   <span className="online-dot" />
-                  <span>Gemini NLP Connected</span>
+                  <span>Virtual Business Assistant</span>
                 </div>
               </div>
             </div>
@@ -129,9 +129,9 @@ const Chatbot = () => {
         ) : (
           <>
             <div className="toggle-icon-wrap">
-              <Sparkles size={18} />
+              <Sparkles size={16} />
             </div>
-            <span className="toggle-label">Ask AI Manager</span>
+            <span className="toggle-label">Copilot Assistant</span>
           </>
         )}
       </button>

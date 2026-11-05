@@ -174,23 +174,23 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      {/* KPI Cards Grid */}
+      {/* 4-Column Balanced KPI Strip */}
       <div className="stats-grid">
-        {/* Card 1: Total Sales */}
+        {/* Card 1: Total Revenue */}
         <div className="modern-kpi-card">
           <div className="kpi-header">
-            <span className="kpi-title">Total Sales</span>
+            <span className="kpi-title">Total Revenue</span>
             <div className="kpi-icon-wrapper kpi-icon-blue">
-              <TrendingUp size={20} />
+              <TrendingUp size={18} />
             </div>
           </div>
           <div className="kpi-body">
             <h2 className="kpi-value">₹{summary.sales.toLocaleString()}</h2>
             <div className="kpi-footer">
               <span className="kpi-badge kpi-badge-positive">
-                <ArrowUpRight size={13} /> Active Revenue
+                <ArrowUpRight size={12} /> Active Inflows
               </span>
-              <span className="kpi-subtext">Calculated from verified bills</span>
+              <span className="kpi-subtext">Verified sales ledger</span>
             </div>
           </div>
         </div>
@@ -198,18 +198,18 @@ const Dashboard = () => {
         {/* Card 2: Total Purchases */}
         <div className="modern-kpi-card">
           <div className="kpi-header">
-            <span className="kpi-title">Total Purchases</span>
+            <span className="kpi-title">Inventory Purchases</span>
             <div className="kpi-icon-wrapper kpi-icon-emerald">
-              <ShoppingCart size={20} />
+              <ShoppingCart size={18} />
             </div>
           </div>
           <div className="kpi-body">
             <h2 className="kpi-value">₹{summary.purchases.toLocaleString()}</h2>
             <div className="kpi-footer">
               <span className="kpi-badge kpi-badge-neutral">
-                Stock Reorders
+                Stock Intake
               </span>
-              <span className="kpi-subtext">Supplier inventory intake</span>
+              <span className="kpi-subtext">Vendor supplier cost</span>
             </div>
           </div>
         </div>
@@ -217,9 +217,9 @@ const Dashboard = () => {
         {/* Card 3: Total Expenses */}
         <div className="modern-kpi-card">
           <div className="kpi-header">
-            <span className="kpi-title">Total Expenses</span>
+            <span className="kpi-title">Operating Expenses</span>
             <div className="kpi-icon-wrapper kpi-icon-rose">
-              <CreditCard size={20} />
+              <CreditCard size={18} />
             </div>
           </div>
           <div className="kpi-body">
@@ -228,7 +228,7 @@ const Dashboard = () => {
               <span className="kpi-badge kpi-badge-expense">
                 Operating Cost
               </span>
-              <span className="kpi-subtext">Utilities, rent & OCR slips</span>
+              <span className="kpi-subtext">Overhead & OCR slips</span>
             </div>
           </div>
         </div>
@@ -236,41 +236,41 @@ const Dashboard = () => {
         {/* Card 4: Net Profit */}
         <div className="modern-kpi-card kpi-card-highlight">
           <div className="kpi-header">
-            <span className="kpi-title">Net Profit</span>
+            <span className="kpi-title">Net Operating Profit</span>
             <div className="kpi-icon-wrapper kpi-icon-purple">
-              <Sparkles size={20} />
+              <Sparkles size={18} />
             </div>
           </div>
           <div className="kpi-body">
             <h2 className="kpi-value">₹{summary.profit.toLocaleString()}</h2>
             <div className="kpi-footer">
               <span className="kpi-badge kpi-badge-profit">
-                Gross Margin
+                Net Margin
               </span>
-              <span className="kpi-subtext">Sales − (Expenses + Purchases)</span>
+              <span className="kpi-subtext">Revenue − all outflows</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* AI Executive Intelligence Card */}
+      {/* Executive Performance Briefing */}
       <div className="modern-ai-card">
         <div className="ai-card-header">
           <div className="ai-card-title-group">
             <div className="ai-badge-glowing">
-              <Sparkles size={16} />
-              <span>Gemini AI Business Intelligence</span>
+              <Sparkles size={14} />
+              <span>Automated Intelligence</span>
             </div>
-            <h3 className="ai-headline">Executive Financial Summary & Advisory</h3>
+            <h3 className="ai-headline">Executive Financial Briefing</h3>
           </div>
           <button
             onClick={fetchAiInsights}
             disabled={loadingAi}
             className="ai-refresh-btn"
-            title="Re-run AI Analysis"
+            title="Refresh Performance Briefing"
           >
-            <RefreshCw size={14} className={loadingAi ? "spin-animation" : ""} />
-            <span>{loadingAi ? "Analyzing..." : "Refresh Insights"}</span>
+            <RefreshCw size={13} className={loadingAi ? "spin-animation" : ""} />
+            <span>{loadingAi ? "Analyzing..." : "Refresh Briefing"}</span>
           </button>
         </div>
 
@@ -278,11 +278,11 @@ const Dashboard = () => {
           {loadingAi ? (
             <div className="ai-loading-state">
               <div className="ai-pulsing-loader" />
-              <p>Gemini AI is parsing recent sales velocity, margin spreads and store cashflow...</p>
+              <p>Analyzing transactional velocity, margin spreads and store cashflow...</p>
             </div>
           ) : (
             <div className="ai-text-box">
-              {aiInsights || "No financial insights available yet. Generate invoices or log expenses to initialize analysis."}
+              {aiInsights || "All financial ledgers are currently balanced. Issue invoices or record purchases to populate live executive analytics."}
             </div>
           )}
         </div>

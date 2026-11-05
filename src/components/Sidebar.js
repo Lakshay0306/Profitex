@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Receipt,
@@ -7,22 +7,12 @@ import {
   Truck,
   Wallet,
   Settings,
-  Sparkles,
-  LogOut,
   ChevronRight,
-  Activity
+  Database
 } from "lucide-react";
-import { AuthContext } from "../context/AuthContext";
 
 const Sidebar = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -33,31 +23,22 @@ const Sidebar = () => {
     { name: "Settings", path: "/settings", icon: Settings },
   ];
 
-  const getInitials = (name) => {
-    if (!name) return "AD";
-    const parts = name.trim().split(" ");
-    if (parts.length >= 2) {
-      return (parts[0][0] + parts[1][0]).toUpperCase();
-    }
-    return name.slice(0, 2).toUpperCase();
-  };
-
   return (
     <aside className="sidebar">
       {/* Brand Header */}
       <div className="sidebar-brand">
-        <div className="brand-icon">
-          <Sparkles size={20} className="brand-sparkle" />
+        <div className="brand-logo-mark">
+          <span className="logo-letter">N</span>
         </div>
         <div className="brand-details">
           <span className="brand-title">NexaVentory</span>
-          <span className="brand-subtitle">AI ERP System</span>
+          <span className="brand-subtitle">Enterprise Operations</span>
         </div>
       </div>
 
       {/* Navigation */}
       <div className="sidebar-menu-wrapper">
-        <div className="menu-category-label">OPERATIONS & ANALYTICS</div>
+        <div className="menu-category-label">MANAGEMENT CONSOLE</div>
         <nav className="sidebar-nav">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -69,7 +50,7 @@ const Sidebar = () => {
                 className={`nav-item ${isActive ? "active" : ""}`}
               >
                 <div className="nav-item-icon-wrapper">
-                  <Icon size={18} />
+                  <Icon size={17} />
                 </div>
                 <span className="nav-item-text">{item.name}</span>
                 {isActive && <ChevronRight size={14} className="active-arrow" />}
@@ -79,47 +60,17 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      {/* Quick System Status Widget */}
-      <div className="sidebar-stats-widget">
-        <div className="widget-header">
-          <Activity size={13} style={{ color: "#2563eb" }} />
-          <span>System Status</span>
-        </div>
-        <div className="widget-row">
-          <span>Engine:</span>
-          <span className="widget-val-green">Gemini AI Active</span>
-        </div>
-        <div className="widget-row">
-          <span>Database:</span>
-          <span className="widget-val-blue">MongoDB Synced</span>
-        </div>
-      </div>
-
-      {/* AI Assistant Promo Pill */}
-      <div className="sidebar-ai-pill">
-        <div className="ai-pill-dot" />
-        <span>Gemini AI Engine Active</span>
-      </div>
-
-      {/* Bottom User Profile Section */}
+      {/* Professional System Health Status in Sidebar Footer */}
       <div className="sidebar-footer">
-        <div className="user-profile-card">
-          <div className="user-avatar">
-            {getInitials(user?.name)}
+        <div className="sidebar-system-status">
+          <div className="system-status-indicator">
+            <span className="system-dot" />
+            <span className="system-label">System Online</span>
           </div>
-          <div className="user-info">
-            <span className="user-name" title={user?.name || "Admin"}>
-              {user?.name || "Admin"}
-            </span>
-            <span className="user-role">Administrator</span>
+          <div className="system-sublabel">
+            <Database size={11} style={{ marginRight: 4 }} />
+            <span>MongoDB Atlas · Cloud DB</span>
           </div>
-          <button
-            onClick={handleLogout}
-            className="user-logout-btn"
-            title="Log Out"
-          >
-            <LogOut size={16} />
-          </button>
         </div>
       </div>
     </aside>

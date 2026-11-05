@@ -156,7 +156,7 @@ const Products = () => {
 
       {/* AI INTELLIGENCE ROW */}
       <div className="ai-features-grid">
-        {/* AI Demand Prediction Card */}
+        {/* Demand Forecasting Card */}
         <div className="ai-feature-card ai-feature-demand">
           <div className="feature-card-header">
             <div className="feature-header-left">
@@ -164,8 +164,8 @@ const Products = () => {
                 <TrendingUp size={18} />
               </div>
               <div>
-                <h4 className="feature-title">AI Demand Prediction</h4>
-                <p className="feature-subtitle">Run-rate heuristics & stockout prevention</p>
+                <h4 className="feature-title">Demand Forecasting</h4>
+                <p className="feature-subtitle">Sales velocity analytics & stockout prevention</p>
               </div>
             </div>
             <button
@@ -174,7 +174,7 @@ const Products = () => {
               className="feature-action-btn btn-demand"
             >
               <RefreshCw size={14} className={loadingAi ? "spin-animation" : ""} />
-              <span>{loadingAi ? "Calculating..." : "Run Prediction"}</span>
+              <span>{loadingAi ? "Analyzing..." : "Run Forecast"}</span>
             </button>
           </div>
 
@@ -193,7 +193,7 @@ const Products = () => {
           )}
         </div>
 
-        {/* AI Pricing Optimization Card */}
+        {/* Dynamic Pricing Engine Card */}
         <div className="ai-feature-card ai-feature-pricing">
           <div className="feature-card-header">
             <div className="feature-header-left">
@@ -201,8 +201,8 @@ const Products = () => {
                 <Coins size={18} />
               </div>
               <div>
-                <h4 className="feature-title">AI Pricing Optimization</h4>
-                <p className="feature-subtitle">Elasticity & gross margin maximizer</p>
+                <h4 className="feature-title">Dynamic Pricing Engine</h4>
+                <p className="feature-subtitle">Price elasticity heuristics & gross margin optimizer</p>
               </div>
             </div>
             <button
